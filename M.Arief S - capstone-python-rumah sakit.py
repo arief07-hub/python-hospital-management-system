@@ -149,6 +149,9 @@ def proses_pembayaran(biaya):
         kurang = biaya - total_bayar             # sisa yang harus dibayar
         print(f"Kekurangan saat ini: Rp{kurang:,}")
         uang = input_angka("Masukkan uang       : ")
+        if uang is None:                         # user ketik 0 = batal
+            print("Pembayaran dibatalkan.")
+            return None                          # sinyal batal ke pemanggil
         total_bayar += uang                      # tambahkan ke akumulasi
 
         if total_bayar < biaya:                  # kalau masih kurang
@@ -205,7 +208,7 @@ def create_pasien():
         print("Penambahan data dibatalkan.")
         return
 
-    umur = input_angka("Masukkan Umur       : ")
+    umur = input_angka_rentang("Masukkan Umur       : ", 1, 120)   # umur wajar 1-120
     if umur is None:
         print("Penambahan data dibatalkan.")
         return
@@ -230,13 +233,15 @@ def create_pasien():
         print("Penambahan data dibatalkan.")
         return
 
-    biaya = input_angka("Masukkan Biaya (Rp) : ")
+    biaya = input_angka_rentang("Masukkan Biaya (Rp) : ", 10000, 1000000000)  # min Rp10.000
     if biaya is None:
         print("Penambahan data dibatalkan.")
         return
 
     # Proses pembayaran: uang diakumulasi sampai cukup, lalu hitung kembalian
     bayar = proses_pembayaran(biaya)
+    if bayar is None:                         # pembayaran dibatalkan (ketik 0)
+        return
 
     # Gabungkan key + value menjadi satu dictionary pakai zip()
     keys   = ["id", "nama", "umur", "penyakit", "ruangan", "dokter", "status", "biaya", "bayar"]
@@ -288,11 +293,12 @@ def read_pasien():
             print("  [!] Pasien tidak ditemukan.")
 
     elif pilihan == "3":
-        kata = input("Masukkan Nama (sebagian juga bisa): ").title()
+        kata = input("Masukkan Nama (sebagian juga bisa): ")
         # cari semua pasien yang namanya mengandung kata kunci
+        # .lower() di kedua sisi -> pencarian tidak peduli huruf besar/kecil
         hasil = []
         for pasien in data_pasien:
-            if kata in pasien["nama"]:
+            if kata.lower() in pasien["nama"].lower():
                 hasil.append(pasien)
         if hasil:
             tampilkan_tabel(hasil)
@@ -329,28 +335,45 @@ def update_pasien():
     kolom = input("Pilih kolom (1-7): ")
 
     # simpan dulu nilai barunya ke variabel sementara (belum langsung diubah)
+    # semua input pakai helper (input_teks/input_angka) agar konsisten & bisa batal
     if kolom == "1":
-        field, nilai_baru = "nama", input("Nama baru: ").title()
+        field, nilai_baru = "nama", input_teks("Nama baru: ")
     elif kolom == "2":
-        field, nilai_baru = "umur", input_angka("Umur baru: ")
+        field, nilai_baru = "umur", input_angka_rentang("Umur baru: ", 1, 120)
     elif kolom == "3":
-        field, nilai_baru = "penyakit", input("Penyakit baru: ").title()
+        field, nilai_baru = "penyakit", input_teks("Penyakit baru: ")
     elif kolom == "4":
-        field, nilai_baru = "ruangan", input("Ruangan baru: ").title()
+        field, nilai_baru = "ruangan", input_teks("Ruangan baru: ")
     elif kolom == "5":
-        field, nilai_baru = "dokter", input("Dokter baru: ").title()
+        field, nilai_baru = "dokter", input_teks("Dokter baru: ")
     elif kolom == "6":
         field, nilai_baru = "status", pilih_status_rawat()
     elif kolom == "7":
-        field, nilai_baru = "biaya", input_angka("Biaya baru: ")
+        field, nilai_baru = "biaya", input_angka_rentang("Biaya baru: ", 10000, 1000000000)
     else:
         print("  [!] Pilihan tidak valid.")
+        return
+
+    # kalau nilai_baru None berarti user ketik 0 (batal) -> jangan ubah data
+    if nilai_baru is None:
+        print("Update dibatalkan.")
         return
 
     # tampilan perubahan lama -> baru, minta konfirmasi
     print(f"\nPerubahan: {field} '{pasien[field]}' -> '{nilai_baru}'")
     if konfirmasi("Terapkan perubahan ini?"):
         pasien[field] = nilai_baru            # baru diubah di sini
+
+        # BUG 4: kalau biaya diubah jadi lebih besar dari yang sudah dibayar,
+        # minta pembayaran kekurangannya
+        if field == "biaya" and pasien["biaya"] > pasien["bayar"]:
+            kurang = pasien["biaya"] - pasien["bayar"]
+            print(f"\nBiaya baru Rp{pasien['biaya']:,}, sudah dibayar Rp{pasien['bayar']:,}.")
+            print(f"Kekurangan: Rp{kurang:,}. Silakan lunasi.")
+            tambahan = proses_pembayaran(kurang)
+            if tambahan is not None:
+                pasien["bayar"] += tambahan   # tambahkan pembayaran ke akumulasi
+
         print(f"\n[OK] Data pasien '{pasien['nama']}' berhasil diperbarui!")
         tampilkan_tabel([pasien])
     else:
@@ -426,32 +449,35 @@ def statistik_pasien():
         return
 
     total_pasien = len(data_pasien)
-    total_biaya  = 0
+    total_biaya  = 0                          # total tagihan (semua biaya)
+    total_bayar  = 0                          # total uang yang sudah masuk
     total_umur   = 0
     pasien_termahal = data_pasien[0]          # anggap data pertama termahal dulu
 
     for pasien in data_pasien:                # jumlahkan semua sambil cari termahal
         total_biaya += pasien["biaya"]
+        total_bayar += pasien["bayar"]        # akumulasi pembayaran yang diterima
         total_umur  += pasien["umur"]
         if pasien["biaya"] > pasien_termahal["biaya"]:
             pasien_termahal = pasien
 
     rata_umur = total_umur / total_pasien     # rata-rata = total / jumlah
+    tertunggak = total_biaya - total_bayar    # sisa tagihan yang belum dibayar
 
-    print(f"Total pasien    : {total_pasien}")
-    print(f"Total pemasukan : Rp{total_biaya:,}")
-    print(f"Rata-rata umur  : {rata_umur:.1f} tahun")   # .1f = 1 angka di belakang koma
-    print(f"Pasien termahal : {pasien_termahal['nama']} (Rp{pasien_termahal['biaya']:,})")
+    print(f"Total pasien       : {total_pasien}")
+    print(f"Total tagihan      : Rp{total_biaya:,}")   # semua biaya perawatan
+    print(f"Total pemasukan    : Rp{total_bayar:,}")   # uang yang sudah diterima RS
+    print(f"Tagihan tertunggak : Rp{tertunggak:,}")    # biaya - bayar
+    print(f"Rata-rata umur     : {rata_umur:.1f} tahun")
+    print(f"Pasien termahal    : {pasien_termahal['nama']} (Rp{pasien_termahal['biaya']:,})")
 
-    # hitung jumlah pasien per status rawat
-    print("\nJumlah pasien per status rawat:")
+    print("\nJumlah pasien per status rawat:")  # hitung jumlah pasien per status rawat
     for status in pilihan_status:             # cek satu per satu status yang ada
         jumlah = 0
         for pasien in data_pasien:
             if pasien["status"] == status:
                 jumlah += 1
         print(f"  {status:<14}: {jumlah} pasien")
-
 
 # ============================================================
 # SECTION 9: MENU UTAMA (PROGRAM BERJALAN DI SINI)
@@ -471,7 +497,6 @@ def menu():
         print("7. Keluar")
         pilihan = input("Pilih menu (1-7): ")
 
-                                                # fungsi sesuai pilihan user
         if pilihan == "1":
             read_pasien()
             kembali_ke_menu()
