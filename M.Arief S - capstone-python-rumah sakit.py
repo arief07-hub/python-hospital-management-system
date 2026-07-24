@@ -1,47 +1,39 @@
 # ============================================================
 # CAPSTONE PROJECT MODULE 2
 # Judul : Data Pasien Rumah Sakit
-# Nama  : Arief
+# Nama  : Muhammad Arief Setiawan
 # ============================================================
 
-# --- IMPORT LIBRARY ---
-from tabulate import tabulate   # library eksternal untuk menampilkan tabel rapi
-                                # (perlu install dulu: pip install tabulate)
-
-
-# ============================================================
-# SECTION 1: DATA (COLLECTION)
-# ============================================================
-# Data disimpan dalam bentuk LIST OF DICTIONARY.
-# - list  -> menampung banyak pasien (bisa ditambah/dihapus)
-# - dict  -> tiap pasien punya beberapa field (key : value)
-# 'id' adalah kolom UNIK (tidak boleh sama antar pasien).
-# 'bayar'  menyimpan uang yang sudah dibayarkan pasien.
-# 'dokter' menyimpan nama dokter penanggung jawab.
-# 'status' menyimpan status rawat pasien.
+from tabulate import tabulate
+# ============================================================  # - list  -> menampung banyak pasien (bisa ditambah/dihapus)  # Data disimpan LIST OF DICTIONARY.
+# SECTION 1: DATA (COLLECTION)                                  # - dict  -> tiap pasien punya beberapa field (key : value)
 
 data_pasien = [
-    {"id": "P001", "nama": "Budi Santoso",   "umur": 45, "penyakit": "Diabetes",   "ruangan": "Melati",  "dokter": "Dr. Hasan", "status": "Rawat Inap",   "biaya": 5000000, "bayar": 5000000},
-    {"id": "P002", "nama": "Siti Aminah",    "umur": 30, "penyakit": "Demam",      "ruangan": "Mawar",   "dokter": "Dr. Rina",  "status": "Rawat Jalan",  "biaya": 1500000, "bayar": 1500000},
-    {"id": "P003", "nama": "Andi Wijaya",    "umur": 60, "penyakit": "Hipertensi", "ruangan": "Anggrek", "dokter": "Dr. Bagas", "status": "Sudah Pulang", "biaya": 3200000, "bayar": 3200000},
-    {"id": "P004", "nama": "Dewi Lestari",   "umur": 28, "penyakit": "Tipes",      "ruangan": "Mawar",   "dokter": "Dr. Rina",  "status": "Rawat Inap",   "biaya": 2800000, "bayar": 2000000},
-    {"id": "P005", "nama": "Rudi Hartono",   "umur": 52, "penyakit": "Jantung",    "ruangan": "Melati",  "dokter": "Dr. Hasan", "status": "Rawat Inap",   "biaya": 8500000, "bayar": 8500000},
-    {"id": "P006", "nama": "Maya Sari",      "umur": 22, "penyakit": "Demam",      "ruangan": "Anggrek", "dokter": "Dr. Bagas", "status": "Rawat Jalan",  "biaya": 900000,  "bayar": 900000},
-    {"id": "P007", "nama": "Joko Prasetyo",  "umur": 67, "penyakit": "Stroke",     "ruangan": "Melati",  "dokter": "Dr. Sari",  "status": "Rawat Inap",   "biaya": 12000000,"bayar": 7000000},
-    {"id": "P008", "nama": "Rina Wulandari", "umur": 35, "penyakit": "Diabetes",   "ruangan": "Mawar",   "dokter": "Dr. Sari",  "status": "Sudah Pulang", "biaya": 4100000, "bayar": 4100000},
-    {"id": "P009", "nama": "Agus Salim",     "umur": 41, "penyakit": "Hipertensi", "ruangan": "Anggrek", "dokter": "Dr. Rina",  "status": "Rawat Jalan",  "biaya": 1750000, "bayar": 1750000},
-    {"id": "P010", "nama": "Nia Ramadhani",  "umur": 19, "penyakit": "Tipes",      "ruangan": "Mawar",   "dokter": "Dr. Bagas", "status": "Rawat Inap",   "biaya": 2400000, "bayar": 2400000},
+    {"id": "P001", "nama": "Budi Santoso",   "umur": 45, "penyakit": "Diabetes",   "ruangan": "Melati",  
+     "dokter": "Dr. Hasan", "status": "Rawat Inap",   "biaya": 5000000, "bayar": 5000000},
+    {"id": "P002", "nama": "Siti Aminah",    "umur": 30, "penyakit": "Demam",      "ruangan": "Mawar",   
+     "dokter": "Dr. Rina",  "status": "Rawat Jalan",  "biaya": 1500000, "bayar": 1500000},
+    {"id": "P003", "nama": "Andi Wijaya",    "umur": 60, "penyakit": "Hipertensi", "ruangan": "Anggrek", 
+     "dokter": "Dr. Bagas", "status": "Sudah Pulang", "biaya": 3200000, "bayar": 3200000},
+    {"id": "P004", "nama": "Dewi Lestari",   "umur": 28, "penyakit": "Tipes",      "ruangan": "Mawar",   
+     "dokter": "Dr. Rina",  "status": "Rawat Inap",   "biaya": 2800000, "bayar": 2000000},
+    {"id": "P005", "nama": "Rudi Hartono",   "umur": 52, "penyakit": "Jantung",    "ruangan": "Melati",  
+     "dokter": "Dr. Hasan", "status": "Rawat Inap",   "biaya": 8500000, "bayar": 8500000},
+    {"id": "P006", "nama": "Maya Sari",      "umur": 22, "penyakit": "Demam",      "ruangan": "Anggrek", 
+     "dokter": "Dr. Bagas", "status": "Rawat Jalan",  "biaya": 900000,  "bayar": 900000},
+    {"id": "P007", "nama": "Joko Prasetyo",  "umur": 67, "penyakit": "Stroke",     "ruangan": "Melati",  
+     "dokter": "Dr. Sari",  "status": "Rawat Inap",   "biaya": 12000000,"bayar": 7000000},
+    {"id": "P008", "nama": "Rina Wulandari", "umur": 35, "penyakit": "Diabetes",   "ruangan": "Mawar",   
+     "dokter": "Dr. Sari",  "status": "Sudah Pulang", "biaya": 4100000, "bayar": 4100000},
+    {"id": "P009", "nama": "Agus Salim",     "umur": 41, "penyakit": "Hipertensi", "ruangan": "Anggrek", 
+     "dokter": "Dr. Rina",  "status": "Rawat Jalan",  "biaya": 1750000, "bayar": 1750000},
+    {"id": "P010", "nama": "Nia Ramadhani",  "umur": 19, "penyakit": "Tipes",      "ruangan": "Mawar",   
+     "dokter": "Dr. Bagas", "status": "Rawat Inap",   "biaya": 2400000, "bayar": 2400000},
 ]
+pilihan_status = ["Rawat Inap", "Rawat Jalan", "Sudah Pulang"]  # Daftar pilihan status rawat (dipakai saat Create & Update)
 
-# Daftar pilihan status rawat (dipakai saat Create & Update)
-pilihan_status = ["Rawat Inap", "Rawat Jalan", "Sudah Pulang"]
-
-
-# ============================================================
-# SECTION 2: FUNGSI BANTU (HELPER)
-# ============================================================
-# Fungsi kecil yang dipakai berulang-ulang oleh fitur CRUD.
-# Tujuannya: kode efisien, tidak menulis ulang logika yang sama.
+# =================== SECTION 2: FUNGSI BANTU (HELPER) =========================================
+# Fungsi kecil yang dipakai berulang oleh fitur CRUD. Tujuannya untuk kode efisien, tidak menulis ulang logika yang sama.
 
 def cari_pasien(id_pasien):
     """Mencari 1 pasien berdasarkan ID.
@@ -51,11 +43,9 @@ def cari_pasien(id_pasien):
             return pasien               # langsung kembalikan datanya
     return None                         # jika loop selesai & tidak ketemu
 
-
 def id_sudah_ada(id_pasien):
     """Mengecek apakah sebuah ID sudah dipakai (untuk menjaga keunikan)."""
     return cari_pasien(id_pasien) is not None   # True jika ketemu, False jika tidak
-
 
 def input_angka(pesan):
     """Meminta input yang WAJIB berupa angka.
@@ -69,7 +59,21 @@ def input_angka(pesan):
             return int(nilai)        # ubah teks menjadi angka lalu kembalikan
         print("  [!] Input harus berupa angka (atau 0 untuk batal).")
 
-
+def input_angka_rentang(pesan, minimal, maksimal):
+    """Meminta input angka yang harus berada di rentang tertentu.
+    Ketik 0 untuk BATAL -> mengembalikan None.
+    Menolak nilai di luar rentang (mis. umur 0-120, biaya minimal)."""
+    while True:
+        nilai = input_angka(pesan)           # pakai validasi angka yang sudah ada
+        if nilai is None:                    # user ketik 0 = batal
+            return None
+        if nilai < minimal:
+            print(f"  [!] Nilai terlalu kecil. Minimal {minimal:,}.")
+        elif nilai > maksimal:
+            print(f"  [!] Nilai terlalu besar. Maksimal {maksimal:,}.")
+        else:
+            return nilai                     # nilai valid & di dalam rentang
+        
 def input_teks(pesan):
     """Meminta input teks. Ketik 0 untuk BATAL -> mengembalikan None.
     Teks tidak boleh kosong."""
@@ -80,7 +84,6 @@ def input_teks(pesan):
         if nilai.strip() != "":      # .strip() buang spasi; cek tidak kosong
             return nilai.title()     # rapikan Huruf Depan Kapital
         print("  [!] Tidak boleh kosong (atau ketik 0 untuk batal).")
-
 
 def konfirmasi(pesan):
     """Meminta konfirmasi y/n dari user.
@@ -94,12 +97,10 @@ def konfirmasi(pesan):
         else:
             print("  [!] Ketik 'y' untuk ya atau 'n' untuk tidak.")
 
-
 def kembali_ke_menu():
     """Menahan program agar tidak langsung balik ke menu utama.
     User harus menekan Enter dulu untuk kembali."""
     input("\nTekan Enter untuk kembali ke menu utama...")
-
 
 def pilih_status_rawat():
     """Meminta user memilih status rawat dari daftar yang tersedia.
@@ -123,7 +124,6 @@ def pilih_status_rawat():
         else:
             print("  [!] Pilihan tidak valid. Masukkan angka 1-3.")
 
-
 def generate_id():
     """Membuat ID pasien otomatis, berurutan (P001, P002, ...)."""
     if len(data_pasien) == 0:        # jika data kosong
@@ -134,7 +134,6 @@ def generate_id():
         if angka > angka_terbesar:
             angka_terbesar = angka
     return f"P{angka_terbesar + 1:03d}"        # :03d = angka jadi 3 digit -> 004
-
 
 def proses_pembayaran(biaya):
     """Sistem pembayaran.
@@ -153,19 +152,15 @@ def proses_pembayaran(biaya):
             print("Pembayaran dibatalkan.")
             return None                          # sinyal batal ke pemanggil
         total_bayar += uang                      # tambahkan ke akumulasi
-
         if total_bayar < biaya:                  # kalau masih kurang
             print(f"  [!] Uang masih kurang Rp{biaya - total_bayar:,}. Tambahkan lagi.")
-
     kembalian = total_bayar - biaya              # sisa uang = kembalian
     print(f"\nPembayaran LUNAS. Total dibayar: Rp{total_bayar:,}")
     if kembalian > 0:
         print(f"Kembalian: Rp{kembalian:,}")
     else:
         print("Uang pas, tidak ada kembalian.")
-
     return total_bayar
-
 
 def tampilkan_tabel(list_pasien):
     """Menampilkan daftar pasien dalam bentuk tabel rapi (pakai tabulate)."""
@@ -175,81 +170,66 @@ def tampilkan_tabel(list_pasien):
     tabel = []
     for pasien in list_pasien:
         baris = []
-        # zip() memasangkan tiap judul kolom dengan key-nya secara sejajar
-        for judul, kunci in zip(header, keys):
+        for judul, kunci in zip(header, keys):      # zip() memasangkan tiap judul kolom dengan key-nya secara sejajar
             nilai = pasien[kunci]
             if kunci in ("biaya", "bayar"):
-                nilai = f"Rp{nilai:,}"      # format ribuan -> Rp5,000,000
+                nilai = f"Rp{nilai:,}"              # format ribuan -> Rp5,000,000
             baris.append(nilai)
-        # kolom terakhir = Lunas jika bayar >= biaya, selain itu Belum Lunas
-        if pasien["bayar"] >= pasien["biaya"]:
+        if pasien["bayar"] >= pasien["biaya"]:      # kolom terakhir = Lunas jika bayar >= biaya, selain itu Belum Lunas
             baris.append("Lunas")
         else:
             baris.append("Belum Lunas")
         tabel.append(baris)
-
     print(tabulate(tabel, headers=header, tablefmt="fancy_grid"))
 
-
-# ============================================================
-# SECTION 3: FITUR CREATE (MENAMBAH DATA)
-# ============================================================
+# ====================== SECTION 3: FITUR CREATE ======================================
+# SECTION 3: FITUR CREATE
 
 def create_pasien():
-    print("\n=== TAMBAH DATA PASIEN ===")
+    print("\n\033[1m=== TAMBAH DATA PASIEN ===\033[0m")
     print("(Ketik 0 kapan saja untuk membatalkan dan kembali ke menu)")
 
     id_pasien = generate_id()                 # ID dibuat otomatis oleh sistem
     print(f"ID otomatis untuk pasien ini: {id_pasien}")
-
-    # Tiap input dicek: kalau None berarti user ketik 0 (batal) -> hentikan
-    nama = input_teks("Masukkan Nama       : ")
+    nama = input_teks("Masukkan Nama       : ")     # Tiap input dicek: kalau None berarti user ketik 0 (batal) -> hentikan
     if nama is None:
         print("Penambahan data dibatalkan.")
         return
-
     umur = input_angka_rentang("Masukkan Umur       : ", 1, 120)   # umur wajar 1-120
     if umur is None:
         print("Penambahan data dibatalkan.")
         return
-
     penyakit = input_teks("Masukkan Penyakit   : ")
     if penyakit is None:
         print("Penambahan data dibatalkan.")
         return
-
     ruangan = input_teks("Masukkan Ruangan    : ")
     if ruangan is None:
         print("Penambahan data dibatalkan.")
         return
-
     dokter = input_teks("Masukkan Dokter     : ")
     if dokter is None:
         print("Penambahan data dibatalkan.")
         return
-
     status = pilih_status_rawat()             # status dipilih dari daftar
     if status is None:
         print("Penambahan data dibatalkan.")
         return
-
     biaya = input_angka_rentang("Masukkan Biaya (Rp) : ", 10000, 1000000000)  # min Rp10.000
     if biaya is None:
         print("Penambahan data dibatalkan.")
         return
 
-    # Proses pembayaran: uang diakumulasi sampai cukup, lalu hitung kembalian
-    bayar = proses_pembayaran(biaya)
-    if bayar is None:                         # pembayaran dibatalkan (ketik 0)
+    bayar = proses_pembayaran(biaya)        # Proses pembayaran: uang diakumulasi sampai cukup, lalu hitung kembalian
+    if bayar is None:                       # pembayaran dibatalkan (ketik 0)
         return
 
-    # Gabungkan key + value menjadi satu dictionary pakai zip()
-    keys   = ["id", "nama", "umur", "penyakit", "ruangan", "dokter", "status", "biaya", "bayar"]
+    keys = ["id", "nama", "umur", "penyakit", "ruangan", "dokter", "status", "biaya", "bayar"]     # Gabungkan key + value menjadi satu dictionary pakai zip()
+
     values = [id_pasien, nama, umur, penyakit, ruangan, dokter, status, biaya, bayar]
     pasien_baru = dict(zip(keys, values))
 
-    # tampilkan dulu data yang akan disimpan, lalu minta konfirmasi
-    print("\nData yang akan disimpan:")
+    print("\nData yang akan disimpan:") # tampilkan dulu data yang akan disimpan, lalu minta konfirmasi
     tampilkan_tabel([pasien_baru])
 
     if konfirmasi("Simpan data ini?"):
@@ -258,20 +238,16 @@ def create_pasien():
     else:
         print("Penambahan data dibatalkan.")
 
-
-# ============================================================
-# SECTION 4: FITUR READ (MENAMPILKAN & MENCARI DATA)
-# ============================================================
+# ====================== SECTION 4: FITUR READ (Menampilkan & Mencari data) ======================================
 
 def read_pasien():
     print("\n=== LIHAT DATA PASIEN ===")
 
     if len(data_pasien) == 0:                 # jaga-jaga kalau data kosong
-        print("Belum ada data pasien.")
+        print("\033[1mBelum ada data pasien.\033[0m")
         return
-
-    # Sub-menu: user bisa pilih cara melihat data
-    print("1. Tampilkan semua data")
+    
+    print("1. Tampilkan semua data")    # Sub-menu: user bisa pilih cara melihat data
     print("2. Cari berdasarkan ID")
     print("3. Cari berdasarkan Nama")
     print("0. Kembali ke menu utama")
@@ -279,11 +255,9 @@ def read_pasien():
 
     if pilihan == "0":
         return                                # kembali ke menu utama
-
     if pilihan == "1":
         tampilkan_tabel(data_pasien)
         print(f"Total pasien: {len(data_pasien)}")
-
     elif pilihan == "2":
         id_pasien = input("Masukkan ID Pasien: ").upper()
         pasien = cari_pasien(id_pasien)
@@ -291,14 +265,11 @@ def read_pasien():
             tampilkan_tabel([pasien])         # dibungkus [ ] agar bisa ditabelkan
         else:
             print("  [!] Pasien tidak ditemukan.")
-
     elif pilihan == "3":
-        kata = input("Masukkan Nama (sebagian juga bisa): ")
-        # cari semua pasien yang namanya mengandung kata kunci
-        # .lower() di kedua sisi -> pencarian tidak peduli huruf besar/kecil
+        kata = input("Masukkan Nama (sebagian juga bisa): ")    # cari semua pasien yang namanya mengandung kata kunci
         hasil = []
         for pasien in data_pasien:
-            if kata.lower() in pasien["nama"].lower():
+            if kata.lower() in pasien["nama"].lower():  # .lower() di kedua sisi -> pencarian tidak peduli huruf besar/kecil
                 hasil.append(pasien)
         if hasil:
             tampilkan_tabel(hasil)
@@ -307,36 +278,27 @@ def read_pasien():
     else:
         print("  [!] Pilihan tidak valid.")
 
-
-# ============================================================
-# SECTION 5: FITUR UPDATE (MENGUBAH DATA)
-# ============================================================
+# ========================= SECTION 5: FITUR UPDATE ===================================
 
 def update_pasien():
     print("\n=== UPDATE DATA PASIEN ===")
-
     id_pasien = input("Masukkan ID Pasien yang akan diubah (0 untuk kembali): ").upper()
     if id_pasien == "0":
         return                                # kembali ke menu utama
     pasien = cari_pasien(id_pasien)
-
     if pasien is None:                        # kalau ID tidak ada, hentikan
         print("  [!] Pasien tidak ditemukan.")
         return
-
     print("\nData saat ini:")
     tampilkan_tabel([pasien])
 
-    # User memilih kolom mana yang mau diubah
-    print("\nKolom yang bisa diubah:")
+    print("\nKolom yang bisa diubah:")          # User memilih kolom mana yang mau diubah
     print("1. Nama     2. Umur     3. Penyakit")
     print("4. Ruangan  5. Dokter   6. Status Rawat")
     print("7. Biaya")
     kolom = input("Pilih kolom (1-7): ")
 
-    # simpan dulu nilai barunya ke variabel sementara (belum langsung diubah)
-    # semua input pakai helper (input_teks/input_angka) agar konsisten & bisa batal
-    if kolom == "1":
+    if kolom == "1":       # simpan nilai barunya ke variabel sementara, semua input pakai helper (input_teks/input_angka) agar konsisten & bisa batal
         field, nilai_baru = "nama", input_teks("Nama baru: ")
     elif kolom == "2":
         field, nilai_baru = "umur", input_angka_rentang("Umur baru: ", 1, 120)
@@ -354,35 +316,26 @@ def update_pasien():
         print("  [!] Pilihan tidak valid.")
         return
 
-    # kalau nilai_baru None berarti user ketik 0 (batal) -> jangan ubah data
-    if nilai_baru is None:
+    if nilai_baru is None:      # kalau nilai_baru None berarti user ketik 0 (batal) -> jangan ubah data
         print("Update dibatalkan.")
         return
 
-    # tampilan perubahan lama -> baru, minta konfirmasi
-    print(f"\nPerubahan: {field} '{pasien[field]}' -> '{nilai_baru}'")
+    print(f"\nPerubahan: {field} '{pasien[field]}' -> '{nilai_baru}'")  # tampilan perubahan lama -> baru, minta konfirmasi
     if konfirmasi("Terapkan perubahan ini?"):
-        pasien[field] = nilai_baru            # baru diubah di sini
-
-        # BUG 4: kalau biaya diubah jadi lebih besar dari yang sudah dibayar,
-        # minta pembayaran kekurangannya
-        if field == "biaya" and pasien["biaya"] > pasien["bayar"]:
+        pasien[field] = nilai_baru                                      # baru diubah di sini
+        if field == "biaya" and pasien["biaya"] > pasien["bayar"]:      # minta pembayaran kekurangannya
             kurang = pasien["biaya"] - pasien["bayar"]
             print(f"\nBiaya baru Rp{pasien['biaya']:,}, sudah dibayar Rp{pasien['bayar']:,}.")
             print(f"Kekurangan: Rp{kurang:,}. Silakan lunasi.")
             tambahan = proses_pembayaran(kurang)
             if tambahan is not None:
-                pasien["bayar"] += tambahan   # tambahkan pembayaran ke akumulasi
-
+                pasien["bayar"] += tambahan                         # tambahkan pembayaran ke akumulasi
         print(f"\n[OK] Data pasien '{pasien['nama']}' berhasil diperbarui!")
         tampilkan_tabel([pasien])
     else:
         print("Perubahan dibatalkan.")
 
-
-# ============================================================
-# SECTION 6: FITUR DELETE (MENGHAPUS DATA)
-# ============================================================
+# ======================== SECTION 6: FITUR DELETE ====================================
 
 def delete_pasien():
     print("\n=== HAPUS DATA PASIEN ===")
@@ -405,41 +358,31 @@ def delete_pasien():
     else:
         print("Penghapusan dibatalkan.")
 
+# ========================= SECTION 7: FITUR SORTING ===================================
 
-# ============================================================
-# SECTION 7: FITUR SORTING (URUTKAN DATA)
-# ============================================================
-
-def ambil_biaya(pasien):    # fungsi bantu sebagai 'key' sorting (pengganti lambda)
+def ambil_biaya(pasien):    # fungsi bantu sebagai 'key' sorting 
     return pasien["biaya"]
-
 def ambil_umur(pasien):
     return pasien["umur"]
-
 def urutkan_pasien():
-    print("\n=== URUTKAN DATA ===")
+    print("\033[1m\n=== URUTKAN DATA ===\033[0m")
     print("1. Biaya (termahal dulu)")
     print("2. Umur (termuda dulu)")
     print("0. Kembali ke menu utama")
     pilihan = input("Pilih (0/1/2): ")
 
     if pilihan == "0":
-        return                                # kembali ke menu utama
-
+        return       # kembali ke menu utama
     if pilihan == "1":
-        # sorted() mengurutkan; key menentukan dasar urutan; reverse=True = besar->kecil
-        hasil = sorted(data_pasien, key=ambil_biaya, reverse=True)
+        hasil = sorted(data_pasien, key=ambil_biaya, reverse=True)  # sorted() mengurutkan; key menentukan dasar urutan; reverse=True = besar->kecil
     elif pilihan == "2":
         hasil = sorted(data_pasien, key=ambil_umur)
     else:
-        print("  [!] Pilihan tidak valid.")
+        print("  \033[1m[!] PILIHAN TIDAK VALID\033[0m.")
         return
     tampilkan_tabel(hasil)
 
-
-# ============================================================
-# SECTION 8: FITUR STATISTIK (RINGKASAN DATA)
-# ============================================================
+# ========================= SECTION 8: FITUR STATISTIK ===================================
 
 def statistik_pasien():
     print("\n=== STATISTIK DATA PASIEN ===")
@@ -472,30 +415,29 @@ def statistik_pasien():
     print(f"Pasien termahal    : {pasien_termahal['nama']} (Rp{pasien_termahal['biaya']:,})")
 
     print("\nJumlah pasien per status rawat:")  # hitung jumlah pasien per status rawat
-    for status in pilihan_status:             # cek satu per satu status yang ada
+    for status in pilihan_status:               # cek satu per satu status yang ada
         jumlah = 0
         for pasien in data_pasien:
             if pasien["status"] == status:
                 jumlah += 1
         print(f"  {status:<14}: {jumlah} pasien")
 
-# ============================================================
-# SECTION 9: MENU UTAMA (PROGRAM BERJALAN DI SINI)
-# ============================================================
+# ========================== SECTION 9: MENU UTAMA ==================================
 
 def menu():
     while True:                               # looping supaya menu muncul terus
         print("\n" + "=" * 44)
-        print("     SISTEM DATA PASIEN RUMAH SAKIT")
+        print("  \033[1mSISTEM DATA PASIEN RUMAH SAKIT\033[0m")
         print("=" * 44)
-        print("1. Lihat Data")
-        print("2. Tambah Data")
-        print("3. Ubah Data")
-        print("4. Hapus Data")
-        print("5. Urutkan Data")
-        print("6. Statistik")
-        print("7. Keluar")
-        pilihan = input("Pilih menu (1-7): ")
+        print("\033[1m1. Lihat Data\033[0m")
+        print("\033[1m2. Tambah Data\033[0m")
+        print("\033[1m3. Ubah Data\033[0m")
+        print("\033[1m4. Hapus Data\033[0m")
+        print("\033[1m5. Urutkan Data\033[0m")
+        print("\033[1m6. Statistik\033[0m")
+        print("\033[1m7. Keluar\033[0m")
+
+        pilihan = input("\033[1mPilih menu (1-7): \033[0m")
 
         if pilihan == "1":
             read_pasien()
@@ -516,7 +458,7 @@ def menu():
             statistik_pasien()
             kembali_ke_menu()
         elif pilihan == "7":
-            print("\nTerima kasih telah menggunakan aplikasi. Sampai jumpa!")
+            print("\n\033[1mTerima kasih telah menggunakan aplikasi ini dengan baik. Sampai jumpa lagi!\033[0m")
             break                             # keluar dari looping = program berhenti
         else:
             print("  [!] Pilihan tidak valid. Masukkan angka 1-7.")
